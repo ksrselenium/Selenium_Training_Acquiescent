@@ -35,7 +35,7 @@ public class BaseTest
  String drive =oldpath.substring(1, 2)+":";
  String UserDirectoryPath= System.getProperty("user.dir");
   /**
-	 * This function will execute before each class tag in testng.xml
+	 * This function will exencute before each class tag in testng.xml
 	 * @param browser
 	 * @throws Exception
 	 */

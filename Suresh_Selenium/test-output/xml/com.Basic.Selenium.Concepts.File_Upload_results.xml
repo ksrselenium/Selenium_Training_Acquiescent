@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Test"
+           tests="2"
+           failures="0"
+           errors="0"
+           skipped="0"
+           time="16.631">
+  <properties />
+  
+  
+            <testcase name="UploadFile_Using_AutoIt" time="4.867" classname="com.Basic.Selenium.Concepts.File_Upload" />
+                <testcase name="UploadFile_Using_SendKeys" time="11.764" classname="com.Basic.Selenium.Concepts.File_Upload" />
+      
+</testsuite>

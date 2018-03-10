@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="KGK Automation Framework" default="Copy-Into-Results" basedir=".">
+	<property name="sourceDir" location="src" />
+	<echo>"${sourceDir}"</echo>
+	<property name="buildDir" location="bin" />
+	<property name="reportDir" location="reports" />
+	<property name="libDir" location="lib" />
+	<property name="screenshotsDir" location="screenshots" />
+	<property name="testSuiteLocation" location="testSuite" />
+	
+	<!-- timestamp  -->
+	<tstamp>
+	
+		<format property="timestamp" pattern="MMMM_d_yyyy_hh_mm_ss" />
+		
+	</tstamp>
+	
+	<path id="master-classpath">
+		<fileset dir="${libDir}">
+			<include name="*.jar">
+			</include>
+		</fileset>
+		<pathelement path="${buildDir}">
+		</pathelement>
+	</path>
+	
+	<taskdef resource="testngtasks" classpath="${libDir}/testng-5.9-jdk15.jar" />
+	
+	<target name="clean" description="Remove the build and report directories">
+
+		<delete dir="${reportDir}" /> 
+		<delete dir="${screenshotsDir}" />
+		<delete dir="${testSuiteLocation}" />
+	</target>
+
+	<target name="build" description="Creates a build of the test suite.">
+		<echo>"Making directory ${buildDir}"</echo>
+		<mkdir dir="${buildDir}" />
+		<echo>"Making directory ${reportDir}"</echo>
+		<mkdir dir="${reportDir}" />
+		<echo>"Making directory ${screenshotsDir}"</echo>
+		<mkdir dir="${screenshotsDir}" />
+		<echo>"Making directory ${reportDir}"</echo>
+		<mkdir dir="${testSuiteLocation}" />
+		<echo>"Making directory ${testSuiteLocation}"</echo>
+		<mkdir dir="./Results/Build${timestamp}" />
+
+		<echo>"Doing build..."</echo>
+		
+	<javac destdir="${buildDir}" debug="true" includeantruntime="false"  deprecation="false" failonerror="true">
+			<src path="${sourceDir}" />
+			<classpath refid="master-classpath">
+			</classpath>
+		</javac>
+	</target>
+	
+	<!-- to execute WriteXMlFile which genrates xml file based on Controller sheet -->
+	
+	<target name="generatetestNG">
+	    <java fork="true" failonerror="yes" classname="generalFun.WriteXMLFile" classpathref="master-classpath">
+	    	</java>
+	  </target>
+
+
+	<target name="doTest" depends="generatetestNG" description="Execute TestNG tests">
+		<echo>"StartTime: ${timestamp}"</echo>
+		<testng classpathref="master-classpath" outputdir="./reports" workingDir="${buildDir}" haltonfailure="false" useDefaultListeners="false" listeners="org.uncommons.reportng.HTMLReporter,org.uncommons.reportng.JUnitXMLReporter">
+
+			<!-- Specify suites or scripts to run here -->
+			
+			<xmlfileset dir="${testSuiteLocation}" includes="*.xml" />
+			<sysproperty key="org.uncommons.reportng.title" value="Test Result Report" />
+			 <sysproperty key="org.uncommons.reportng.escape-output" value="false" />
+			
+		</testng>
+	</target>
+
+	
+	<!--Task Copy Report and Screenshots Dir into Results Dir.-->
+	<target name="Copy-Into-Results" depends="clean,build,doTest">
+	 <copy todir="./Results/Build${timestamp}">
+	    <fileset dir="./reports"/>
+	  </copy>
+		<copy todir="./Results/Build${timestamp}">
+			    <fileset dir="./screenshots"/>
+			  </copy>
+		
+	</target>
+	
+	<tstamp >		
+			<format property="timestamp1" pattern="MMMM_d_yyyy_hh_mm_ss" />	
+		
+		</tstamp></project>

@@ -1,6 +1,6 @@
 package com.valtech.kgk.app.ak.test.OKAPI;
 
-import org.testng.annotations.Test;
+import org.ttestng.annotations.Test;
 import org.testng.AssertJUnit;
 import generalFun.GeneralFun;
 import generalFun.mySoftAssert;
